@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Keyword Extractor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-brain"></i> AI Keyword Extractor</h1>
+            <p class="subtitle">Extract important keywords and phrases from any text using advanced AI algorithms</p>
+        </header>
+
+        <div class="app-container">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-keyboard"></i> Input Text
+                </div>
+                <textarea id="inputText" placeholder="Paste or type your text here...">Artificial intelligence (AI) is intelligence demonstrated by machines, as opposed to the natural intelligence displayed by animals including humans. AI applications include advanced web search engines, recommendation systems, understanding human speech, self-driving cars, automated decision-making and competing at the highest level in strategic game systems. As machines become increasingly capable, tasks considered to require "intelligence" are often removed from the definition of AI, a phenomenon known as the AI effect. For instance, optical character recognition is frequently excluded from things considered to be AI, having become a routine technology.</textarea>
+                
+                <div class="controls">
+                    <div class="options">
+                        <div class="option-group">
+                            <label for="algorithm">Algorithm</label>
+                            <select id="algorithm">
+                                <option value="tfidf">TF-IDF</option>
+                                <option value="rake">RAKE</option>
+                                <option value="textrank">TextRank</option>
+                                <option value="yake">YAKE</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label for="maxKeywords">Max Keywords</label>
+                            <input type="number" id="maxKeywords" min="1" max="50" value="15">
+                        </div>
+                        <div class="option-group">
+                            <label for="language">Language</label>
+                            <select id="language">
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button id="extractBtn" class="btn btn-primary">
+                        <i class="fas fa-magic"></i> Extract Keywords
+                    </button>
+                </div>
+                
+                <div class="controls" style="margin-top: 20px;">
+                    <button id="clearBtn" class="btn btn-secondary">
+                        <i class="fas fa-trash"></i> Clear Text
+                    </button>
+                    <button id="sampleBtn" class="btn btn-secondary">
+                        <i class="fas fa-file-alt"></i> Load Sample
+                    </button>
+                    <button id="highlightBtn" class="btn btn-secondary">
+                        <i class="fas fa-highlighter"></i> Highlight Keywords
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-key"></i> Extracted Keywords
+                </div>
+                
+                <div id="keywordsContainer" class="keywords-container">
+                    <div class="empty-state">
+                        <i class="fas fa-key"></i>
+                        <p>Your extracted keywords will appear here</p>
+                    </div>
+                </div>
+                
+                <div class="stats">
+                    <div id="wordCount">Words: 0</div>
+                    <div id="keywordCount">Keywords: 0</div>
+                    <div id="processingTime">Time: 0ms</div>
+                </div>
+                
+                <div class="controls" style="margin-top: 20px;">
+                    <button id="copyBtn" class="btn btn-success">
+                        <i class="fas fa-copy"></i> Copy Keywords
+                    </button>
+                    <button id="exportBtn" class="btn btn-success">
+                        <i class="fas fa-download"></i> Export as CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card history-panel">
+            <div class="card-title">
+                <i class="fas fa-history"></i> Extraction History
+            </div>
+            <div id="historyContainer">
+                <div class="empty-state">
+                    <i class="fas fa-history"></i>
+                    <p>Your extraction history will appear here</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>AI Keyword Extractor &copy; 2025 | Powered by Advanced NLP Algorithms</p>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>

@@ -97,4 +97,37 @@ document.addEventListener('DOMContentLoaded', function() {
             .filter(word => !stopwords.includes(word))
             .sort((a, b) => wordFreq[b] - wordFreq[a])
             .slice(0, maxKeywords * 2); // Get more than needed for variety
-        
+                
+        // Generate keywords with scores
+        const keywords = filteredWords.map((word, index) => {
+            // Simulate different scoring based on algorithm
+            let score = 0;
+            switch(algorithm) {
+                case 'tfidf':
+                    score = 0.7 + (Math.random() * 0.3);
+                    break;
+                case 'rake':
+                    score = 0.6 + (Math.random() * 0.4);
+                    break;
+                case 'textrank':
+                    score = 0.8 + (Math.random() * 0.2);
+                    break;
+                case 'yake':
+                    score = 0.5 + (Math.random() * 0.5);
+                    break;
+            }
+            
+            // Add some multi-word keywords for variety
+            if (index % 3 === 0 && index + 1 < filteredWords.length) {
+                const twoWordPhrase = `${word} ${filteredWords[index + 1]}`;
+                return {
+                    keyword: twoWordPhrase,
+                    score: Math.min(0.95, score + 0.1)
+                };
+            }
+            
+            return {
+                keyword: word,
+                score: score
+            };
+        });

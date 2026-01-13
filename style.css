@@ -303,3 +303,13 @@ option {
     border-top-color: var(--primary);
     animation: spin 1s ease-in-out infinite;
 }
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.highlight {
+    background-color: rgba(76, 201, 240, 0.3);
+    padding: 2px 4px;
+    border-radius: 4px;
+}

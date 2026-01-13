@@ -238,3 +238,22 @@ option {
     margin-bottom: 15px;
     opacity: 0.5;
 }
+
+.history-panel {
+    margin-top: 30px;
+}
+
+.history-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius);
+    padding: 15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 3px solid var(--primary);
+}
+
+.history-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+}

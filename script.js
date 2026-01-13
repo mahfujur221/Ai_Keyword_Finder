@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
     
     let extractionHistory = [];
-    let currentKeywords = [];   
+    let currentKeywords = [];
+    
     // Event Listeners
     extractBtn.addEventListener('click', extractKeywords);
     clearBtn.addEventListener('click', clearText);
@@ -30,8 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
     copyBtn.addEventListener('click', copyKeywords);
     exportBtn.addEventListener('click', exportKeywords);
     inputText.addEventListener('input', updateWordCount);
-
-
     
     // Initialize
     updateWordCount();
@@ -73,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
             extractBtn.disabled = false;
         }, 1500);
     }
-        
+    
     function simulateKeywordExtraction(text, algorithm, maxKeywords) {
         // This is a simplified simulation of keyword extraction
         // In a real application, this would use a proper NLP library or API
@@ -97,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .filter(word => !stopwords.includes(word))
             .sort((a, b) => wordFreq[b] - wordFreq[a])
             .slice(0, maxKeywords * 2); // Get more than needed for variety
-                
+        
         // Generate keywords with scores
         const keywords = filteredWords.map((word, index) => {
             // Simulate different scoring based on algorithm
@@ -131,3 +130,177 @@ document.addEventListener('DOMContentLoaded', function() {
                 score: score
             };
         });
+        
+        // Sort by score and limit to maxKeywords
+        return keywords
+            .sort((a, b) => b.score - a.score)
+            .slice(0, maxKeywords);
+    }
+    
+    function displayKeywords(keywords) {
+        currentKeywords = keywords;
+        
+        if (keywords.length === 0) {
+            keywordsContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>No keywords could be extracted from the provided text.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        keywordsContainer.innerHTML = '';
+        
+        keywords.forEach(item => {
+            const keywordEl = document.createElement('div');
+            keywordEl.className = 'keyword';
+            keywordEl.innerHTML = `
+                ${item.keyword}
+                <span class="score">${item.score.toFixed(2)}</span>
+            `;
+            keywordsContainer.appendChild(keywordEl);
+        });
+    }
+    
+    function updateStats(text, keywords, processingTime) {
+        const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+        wordCountEl.textContent = `Words: ${wordCount}`;
+        keywordCountEl.textContent = `Keywords: ${keywords.length}`;
+        processingTimeEl.textContent = `Time: ${processingTime}ms`;
+    }
+    
+    function updateWordCount() {
+        const text = inputText.value.trim();
+        const wordCount = text ? text.split(/\s+/).length : 0;
+        wordCountEl.textContent = `Words: ${wordCount}`;
+    }
+    
+    function clearText() {
+        inputText.value = '';
+        updateWordCount();
+    }
+    
+    function loadSampleText() {
+        const randomIndex = Math.floor(Math.random() * sampleTexts.length);
+        inputText.value = sampleTexts[randomIndex];
+        updateWordCount();
+    }
+    
+    function highlightKeywords() {
+        if (currentKeywords.length === 0) {
+            alert('Please extract keywords first.');
+            return;
+        }
+        
+        let text = inputText.value;
+        currentKeywords.forEach(item => {
+            const regex = new RegExp(`\\b${item.keyword}\\b`, 'gi');
+            text = text.replace(regex, `<span class="highlight">${item.keyword}</span>`);
+        });
+        
+        inputText.innerHTML = text;
+    }
+    
+    function copyKeywords() {
+        if (currentKeywords.length === 0) {
+            alert('No keywords to copy.');
+            return;
+        }
+        
+        const keywordText = currentKeywords.map(item => item.keyword).join(', ');
+        navigator.clipboard.writeText(keywordText)
+            .then(() => {
+                // Show success feedback
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy keywords to clipboard.');
+            });
+    }
+    
+    function exportKeywords() {
+        if (currentKeywords.length === 0) {
+            alert('No keywords to export.');
+            return;
+        }
+        
+        let csvContent = "Keyword,Score\n";
+        currentKeywords.forEach(item => {
+            csvContent += `"${item.keyword}",${item.score.toFixed(4)}\n`;
+        });
+        
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'extracted_keywords.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+    
+    function saveToHistory(text, keywords) {
+        const historyItem = {
+            text: text,
+            keywords: keywords,
+            timestamp: new Date().toLocaleString()
+        };
+        
+        extractionHistory.unshift(historyItem);
+        
+        // Keep only last 5 items
+        if (extractionHistory.length > 5) {
+            extractionHistory.pop();
+        }
+        
+        renderHistory();
+    }
+    
+    function renderHistory() {
+        if (extractionHistory.length === 0) {
+            historyContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-history"></i>
+                    <p>Your extraction history will appear here</p>
+                </div>
+            `;
+            return;
+        }
+        
+        historyContainer.innerHTML = '';
+        
+        extractionHistory.forEach((item, index) => {
+            const historyEl = document.createElement('div');
+            historyEl.className = 'history-item';
+            historyEl.addEventListener('click', () => {
+                inputText.value = item.text;
+                updateWordCount();
+                displayKeywords(item.keywords);
+                updateStats(item.text, item.keywords, 0);
+            });
+            
+            const keywordsPreview = item.keywords.slice(0, 3).map(k => k.keyword).join(', ');
+            
+            historyEl.innerHTML = `
+                <div class="history-text">${item.text.substring(0, 100)}...</div>
+                <div class="history-keywords">
+                    ${item.keywords.slice(0, 5).map(k => 
+                        `<div class="history-keyword">${k.keyword}</div>`
+                    ).join('')}
+                </div>
+                <div style="margin-top: 10px; font-size: 0.8rem; color: var(--gray);">
+                    <i class="far fa-clock"></i> ${item.timestamp}
+                </div>
+            `;
+            
+            historyContainer.appendChild(historyEl);
+        });
+    }
+});

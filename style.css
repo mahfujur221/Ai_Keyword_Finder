@@ -179,3 +179,21 @@ select, input[type="number"] {
     color: var(--light);
     font-size: 0.9rem;
 }
+
+select:focus, input[type="number"]:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+option {
+    color: var(--dark);
+}
+
+.keywords-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    min-height: 100px;
+}

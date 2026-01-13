@@ -216,3 +216,25 @@ option {
     padding: 2px 8px;
     border-radius: 20px;
 }
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 30px;
+    color: var(--gray);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}

@@ -143,3 +143,19 @@ textarea:focus {
 .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.2);
 }
+
+.btn-success {
+    background: var(--success);
+    color: var(--dark);
+}
+
+.btn-success:hover {
+    background: #3ab0d9;
+}
+
+.options {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}

@@ -197,3 +197,22 @@ option {
     margin-top: 20px;
     min-height: 100px;
 }
+
+.keyword {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--shadow);
+    animation: fadeIn 0.5s ease;
+}
+
+.keyword .score {
+    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 20px;
+}

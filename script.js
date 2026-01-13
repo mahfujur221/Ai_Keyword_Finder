@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
     copyBtn.addEventListener('click', copyKeywords);
     exportBtn.addEventListener('click', exportKeywords);
     inputText.addEventListener('input', updateWordCount);
+
+
     
     // Initialize
     updateWordCount();
@@ -71,4 +73,28 @@ document.addEventListener('DOMContentLoaded', function() {
             extractBtn.disabled = false;
         }, 1500);
     }
-    
+        
+    function simulateKeywordExtraction(text, algorithm, maxKeywords) {
+        // This is a simplified simulation of keyword extraction
+        // In a real application, this would use a proper NLP library or API
+        
+        // Clean and tokenize text
+        const words = text.toLowerCase()
+            .replace(/[^\w\s]/g, '')
+            .split(/\s+/)
+            .filter(word => word.length > 2);
+        
+        // Calculate word frequencies
+        const wordFreq = {};
+        words.forEach(word => {
+            wordFreq[word] = (wordFreq[word] || 0) + 1;
+        });
+        
+        // Filter out common stopwords
+        const stopwords = ['the', 'and', 'is', 'in', 'to', 'of', 'a', 'that', 'it', 'with', 'for', 'as', 'was', 'on', 'are', 'this', 'by', 'be', 'or', 'from', 'at', 'an', 'but', 'not', 'have', 'has', 'had', 'what', 'which', 'who', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'too', 'very', 'can', 'will', 'just', 'should', 'now'];
+        
+        const filteredWords = Object.keys(wordFreq)
+            .filter(word => !stopwords.includes(word))
+            .sort((a, b) => wordFreq[b] - wordFreq[a])
+            .slice(0, maxKeywords * 2); // Get more than needed for variety
+        
